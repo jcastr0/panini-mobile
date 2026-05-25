@@ -112,7 +112,8 @@ export async function getStickersByGroup(
       .from("stickers")
       .select("id, code, number, name, team, type, page, group_code")
       .eq("album_id", albumId)
-      .eq("group_code", code.toLowerCase())
+      // group_code en DB está en UPPERCASE (ver seed 0008_seed_group_a.sql)
+      .eq("group_code", code.toUpperCase())
       .order("team", { ascending: true })
       .order("number", { ascending: true }),
     supabase
