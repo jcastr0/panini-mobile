@@ -8,9 +8,12 @@
     "scheme": "paninijdmobile",
     "userInterfaceStyle": "automatic",
     "ios": {
-      "icon": "./assets/expo.icon"
+      "icon": "./assets/expo.icon",
+      "bundleIdentifier": "com.jcastr0.paninijd",
+      "supportsTablet": true
     },
     "android": {
+      "package": "com.jcastr0.paninijd",
       "adaptiveIcon": {
         "backgroundColor": "#E6F4FE",
         "foregroundImage": "./assets/images/android-icon-foreground.png",

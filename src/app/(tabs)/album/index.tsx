@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { ActivityIndicator, ScrollView, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
+import { useRouter } from "expo-router";
 import { ProgressRing } from "@/components/progress-ring";
 import { SectionTile } from "@/components/section-tile";
 import { useAuth } from "@/lib/auth";
@@ -21,6 +22,7 @@ type Card = {
 
 export default function AlbumHomeScreen() {
   const { user } = useAuth();
+  const router = useRouter();
   const [album, setAlbum] = useState<Album | null>(null);
   const [stats, setStats] = useState({
     total: 0,
@@ -137,9 +139,22 @@ export default function AlbumHomeScreen() {
         <View className="flex-row flex-wrap -mx-1">
           {SECTION_ORDER.map((key) => {
             const s = sectionStats.get(key) ?? { total: 0, owned: 0 };
+            // Grupos → /album/grupo/A · especiales → /album/apertura, etc.
+            // Cast: typedRoutes está experimental y emite paths con prefijo de
+            // grupo `(tabs)/...`. En runtime ambos funcionan; usamos la URL
+            // limpia y casteamos para no bloquear el build.
+            const href =
+              key.length === 1
+                ? `/album/grupo/${key.toLowerCase()}`
+                : `/album/${key}`;
             return (
               <View key={key} className="w-1/2 px-1 mb-2">
-                <SectionTile sectionKey={key} owned={s.owned} total={s.total} />
+                <SectionTile
+                  sectionKey={key}
+                  owned={s.owned}
+                  total={s.total}
+                  onPress={() => router.push(href as never)}
+                />
               </View>
             );
           })}

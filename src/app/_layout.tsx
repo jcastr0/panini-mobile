@@ -15,7 +15,7 @@ function AuthGate({ children }: { children: React.ReactNode }) {
     if (!session && inAuthGroup) {
       router.replace("/login");
     } else if (session && segments[0] === "login") {
-      router.replace("/(tabs)");
+      router.replace("/(tabs)" as never);
     }
   }, [session, loading, segments, router]);
 
